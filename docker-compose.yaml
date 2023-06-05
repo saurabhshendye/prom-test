@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.30.3
+    ports:
+      - 9000:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+
+  host2112:
+    image: prom-test:latest
+    ports:
+      - 2112:2112
+    environment:
+      - host=host1
+      - port=2112
+
+  host2113:
+    image: prom-test:latest
+    ports:
+      - 2113:2113
+    environment:
+      - host=host2
+      - port=2113
+    
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # user: $PUID
+    volumes:
+      - ./grafana:/var/lib/grafana
+
+volumes:
+  prometheus-data:
