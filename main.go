@@ -43,5 +43,5 @@ func main() {
 	}()
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("port")), nil)
-	fmt.Println("Exiting?")
+	fmt.Println("Exiting")
 }
